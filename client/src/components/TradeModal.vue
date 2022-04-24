@@ -27,7 +27,7 @@
         <button
           class="main-action-button"
           @click="this.previewMode = true"
-          :disabled="quantity<=0 || quantity>noOfCoins"
+          :disabled="quantity<=0 || currentMode==='Sell'&&quantity>noOfCoins"
           :style="[currentMode === 'Sell' ? { background: 'coral' } : {}]"
         >
           Preview {{ currentMode }}
