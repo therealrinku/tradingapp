@@ -1,5 +1,9 @@
 <template>
-  <TopBar :username="username" :currentBalance="currentBalance" :assets="myAssets"/>
+  <TopBar
+    :username="username"
+    :currentBalance="currentBalance"
+    :assets="myAssets"
+  />
   <NavBar :currentPage="currentPage" :changeCurrentPage="changeCurrentPage" />
   <div v-if="currentPage === 'trade'">
     <TradePage :toggleTradeModal="toggleTradeModal" :assets="assets" />
@@ -13,8 +17,10 @@
       :tradeMode="tradeMode"
       :toggleTradeModal="toggleTradeModal"
       :totalBalance="currentBalance"
-      :pricePerCoin="assets.filter(a=>a.symbol===assetName)[0].price"
-      :noOfCoins="myAssets.filter(a=>a.symbol===assetName)[0]?.quanity || 0"
+      :pricePerCoin="assets.filter((a) => a.symbol === assetName)[0].price"
+      :noOfCoins="
+        myAssets.filter((a) => a.symbol === assetName)[0]?.quanity || 0
+      "
       :performTrade="performTrade"
     />
   </div>
@@ -70,14 +76,27 @@ export default {
       this.tradeMode = tradeMode;
       this.assetName = assetName;
     },
-    performTrade(data){
-        const updatedMyAssets=[...this.myAssets];
-        const updatedAssetIndex=updatedMyAssets.findIndex(d=>d.symbol===data.assetSymbol);
-        updatedMyAssets[updatedAssetIndex].quanity=data.updatedAssetQuantity;
-        this.currentBalance=data.updatedBalance;
-        this.myAssets=updatedMyAssets;
-        this.showTradeModal=false;
-    }
+    performTrade(data) {
+      const updatedMyAssets = [...this.myAssets];
+      const updatedAssetIndex = updatedMyAssets.findIndex(
+        (d) => d.symbol === data.assetSymbol
+      );
+      if (updatedAssetIndex >= 0) {
+        updatedMyAssets[updatedAssetIndex].quanity = data.updatedAssetQuantity;
+      } else {
+        const newAssetIndex = this.assets.findIndex(
+          (d) => d.symbol === data.assetSymbol
+        );
+        const newAsset = {
+          ...this.assets[newAssetIndex],
+          quanity: data.updatedAssetQuantity,
+        };
+        updatedMyAssets.push(newAsset);
+      }
+      this.showTradeModal = false;
+      this.currentBalance = data.updatedBalance;
+      this.myAssets = updatedMyAssets;
+    },
   },
   components: {
     NavBar,
