@@ -44,11 +44,11 @@
       <p>Price per Coin: {{pricePerCoin}}</p>
       <p>Total Price : {{ quantity * pricePerCoin }}</p>
       <p>Fees : 0</p>
-      <p>New Balance : ${{ currentMode==="Buy" ? (50 - (quantity * pricePerCoin)) : (50 + (quantity * pricePerCoin)) }}</p>
+      <p>New Balance : ${{ currentMode==="Buy" ? (totalBalance - (quantity * pricePerCoin)) : (totalBalance + (quantity * pricePerCoin)) }}</p>
       <p>New {{assetName}} Balance : {{ currentMode==="Buy" ? (noOfCoins + quantity) : (noOfCoins- quantity) }}</p>
       <button
         class="main-action-button"
-        @click="performTrade({assetSymbol:assetName,updatedBalance:currentMode==='Buy' ? (50 - (quantity * pricePerCoin)) : (50 + (quantity * pricePerCoin)),updatedAssetQuantity:currentMode==='Buy' ? (noOfCoins + quantity) : (noOfCoins- quantity)})"
+        @click="performTrade({assetSymbol:assetName,updatedBalance:currentMode==='Buy' ? (totalBalance - (quantity * pricePerCoin)) : (totalBalance + (quantity * pricePerCoin)),updatedAssetQuantity:currentMode==='Buy' ? (noOfCoins + quantity) : (noOfCoins- quantity)})"
         :style="[currentMode === 'Sell' ? { background: 'coral',marginTop:'40px' } : {marginTop:'40px'}]"
       >
         {{ currentMode }} Now
