@@ -25,22 +25,8 @@
 export default {
   name: "TradePage",
   props:{
-      toggleTradeModal:Function
-  },
-  data() {
-    return {
-      assets: [
-        { name: "Cardano", price: "0.95", symbol: "ADA" },
-        { name: "Bitcoin", price: "42,454", symbol: "BTC" },
-        { name: "Shiba INU", price: "0.000029", symbol: "SHIB" },
-        { name: "Avalanche", price: "98.44", symbol: "AVAX" },
-        { name: "Tron", price: "0.0092", symbol: "TRX" },
-        { name: "Solana", price: "99.34", symbol: "SOL" },
-        { name: "Dogecoin", price: "0.29", symbol: "DOGE" },
-        { name: "Squid Games", price: "0.000004", symbol: "SQUID" },
-        { name: "Scam INU", price: "0.000000000034939", symbol: "SCAM" },
-      ],
-    };
+      toggleTradeModal:Function,
+      assets:Array
   },
 };
 </script>

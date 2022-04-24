@@ -2,10 +2,10 @@
   <TopBar :username="username" :currentBalance="currentBalance"/>
   <NavBar :currentPage="currentPage" :changeCurrentPage="changeCurrentPage"/>
   <div v-if="currentPage==='trade'">
-    <TradePage :toggleTradeModal="toggleTradeModal"/>
+    <TradePage :toggleTradeModal="toggleTradeModal" :assets="assets"/>
   </div>
   <div v-if="currentPage==='assets'">
-    <AssetsPage :toggleTradeModal="toggleTradeModal"/>
+    <AssetsPage :toggleTradeModal="toggleTradeModal" :myAssets="myAssets"/>
   </div>
   <div v-if="showTradeModal">
     <TradeModal :assetName="assetName" :tradeMode="tradeMode" :toggleTradeModal="toggleTradeModal"/>
@@ -29,10 +29,28 @@ export default {
     return {
       currentPage:"trade",
       username:"Jane Doe",
-      currentBalance:"$50",
+      currentBalance:50,
       showTradeModal:false,
       tradeMode:null,
       assetName:null,
+      assets: [
+        { name: "Cardano", price: "0.95", symbol: "ADA" },
+        { name: "Bitcoin", price: "42,454", symbol: "BTC" },
+        { name: "Shiba INU", price: "0.000029", symbol: "SHIB" },
+        { name: "Avalanche", price: "98.44", symbol: "AVAX" },
+        { name: "Tron", price: "0.0092", symbol: "TRX" },
+        { name: "Solana", price: "99.34", symbol: "SOL" },
+        { name: "Dogecoin", price: "0.29", symbol: "DOGE" },
+        { name: "Squid Games", price: "0.000004", symbol: "SQUID" },
+        { name: "Scam INU", price: "0.000000000034939", symbol: "SCAM" },
+      ],
+      myAssets: [
+        { name: "Cardano", price: 0.95, symbol: "ADA",quanity:43 },
+        { name: "Bitcoin", price: 42454 , symbol: "BTC",quanity:35.55 },
+        { name: "Shiba INU", price: 0.000029, symbol: "SHIB",quanity:24.34 },
+        { name: "Avalanche", price: 98.4, symbol: "AVAX",quanity:204.45 },
+        { name: "Solana", price: 99.34, symbol: "SOL",quanity:390.44 },
+      ]
     }
   },
   methods:{

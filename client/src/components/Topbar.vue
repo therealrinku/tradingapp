@@ -1,7 +1,7 @@
 <template>
   <nav class="topbar">
     <div>
-      <p>Balance:{{ !assetValueHidden ? this.currentBalance : "**" }}</p>
+      <p>Balance:{{ !assetValueHidden ? "$" + this.currentBalance : "**" }}</p>
       <button @click="toggleAssetValueView()">
         {{ assetValueHidden ? "Show" : "Hide" }}
       </button>

@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="asset in assets" :key="asset.name">
+      <tr v-for="asset in myAssets" :key="asset.name">
         <td>
           {{ asset.name }} <span style="font-weight:bold;font-size:10px;">{{ asset.symbol }}</span>
         </td>
@@ -29,18 +29,8 @@
 export default {
   name: "AssetsPage",
   props:{
-      toggleTradeModal:Function
-  },
-  data() {
-    return {
-      assets: [
-        { name: "Cardano", price: 0.95, symbol: "ADA",quanity:43 },
-        { name: "Bitcoin", price: 42454 , symbol: "BTC",quanity:35.55 },
-        { name: "Shiba INU", price: 0.000029, symbol: "SHIB",quanity:24.34 },
-        { name: "Avalanche", price: 98.4, symbol: "AVAX",quanity:204.45 },
-        { name: "Solana", price: 99.34, symbol: "SOL",quanity:390.44 },
-      ],
-    };
+      toggleTradeModal:Function,
+      myAssets:Array
   },
 };
 </script>
