@@ -1,12 +1,16 @@
 <template>
   <div class="overlay" @click="toggleTradeModal(null)"></div>
   <div class="buy-sell-modal">
-    <p>{{ tradeMode + " " + assetName}} </p>
-    <p>{{assetName}} is a cryptop currency which is very popular lol.</p>
+    <div class="tabs">
+      <button @click="setCurrentMode('Buy')" :style="[currentMode==='Buy'?{borderBottom:'solid 2px #019267'}:{}]">Buy</button>
+      <button @click="setCurrentMode('Sell')" :style="[currentMode==='Sell'?{borderBottom:'solid 2px coral'}:{}]">Sell</button>
+    </div>
+    <p>{{"Balance:" + "455"}}</p>
+    <p>{{"Number of" + " " +  assetName+ " you want to " + currentMode  }} </p>
     <div class="actions">
-        <button @click="setQuantity('-1')" :disabled="[quantity===0?true:false]">-</button>
-        <input type="number" v-model="quantity" />
-        <button @click="setQuantity('+1')" :disabled="[quantity===99?true:false]">+</button>
+        <input type="number" v-model="quantity" autofocus/>
+        <span style="text-decoration:underline;margin-top:15px;display:block;">Buy in terms of USD</span>
+        <button :style="[currentMode==='Sell'?{background:'coral'}:{}]">Preview {{currentMode}}</button>
     </div>
   </div>
 </template>
@@ -16,7 +20,8 @@ export default {
   name: "TradeModal",
   data(){
       return {
-          quantity:0
+          quantity:0,
+          currentMode:this.tradeMode,
       }
   },
   methods:{
@@ -27,8 +32,10 @@ export default {
           if(value==="-1"){
               return this.quantity=this.quantity-1
           }
-          this.quantity=value
-          
+          this.quantity=value 
+      },
+      setCurrentMode(value){
+        this.currentMode=value
       }
   },
   props: {
@@ -58,21 +65,54 @@ export default {
   z-index: 2;
   height: 300px;
   width: 300px;
-  padding:10px 15px;
-  border-radius:10px;
+  border-radius:5px;
+  font-size:15px;
+  padding:10px;
 }
 
 input{
     text-align:center;
     border:solid 1px rgba(0, 0, 0, 0.2);
-    margin:0 5px;
     height:25px;
     outline:none;
+    border-radius:5px;
+    font-size:50px;
+    height:auto;
+    width:98%;
 }
 
-button{
-    border:solid 1px rgba(0, 0, 0, 0.2);
-    height:29px;
-    width:30px;
+.tabs{
+  width:100%;
+  margin-bottom:25px;
+}
+
+.tabs button{
+  width:50%;
+  background:inherit;
+  border:none;
+  border-bottom:solid 1px rgba(0, 0, 0, 0.2);
+  height:30px;
+  padding:5px 10px;
+}
+
+.actions button{
+  display:block;
+  margin:auto;
+  margin-top:50px;
+  background: #019267;
+  color: white;
+  border-radius:5px;
+  padding:10px 15px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border:none;
+}
+
+.actions span:hover{
+  cursor: pointer;
+  color:#019267;
 }
 </style>
