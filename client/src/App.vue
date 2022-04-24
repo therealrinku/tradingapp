@@ -83,4 +83,12 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+button:disabled:hover{
+  cursor:not-allowed;
+}
+
+button:disabled{
+  opacity: 0.6;
+}
 </style>

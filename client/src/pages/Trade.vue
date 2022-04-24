@@ -14,7 +14,7 @@
         </td>
         <td>${{ asset.price }}</td>
         <div class="actions">
-          <button @click="toggleTradeModal('Buy',asset.name)">Trade</button>
+          <button @click="toggleTradeModal('Buy',asset.symbol)">Trade</button>
         </div>
       </tr>
     </tbody>

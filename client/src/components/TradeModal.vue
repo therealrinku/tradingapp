@@ -1,16 +1,56 @@
 <template>
   <div class="overlay" @click="toggleTradeModal(null)"></div>
   <div class="buy-sell-modal">
-    <div class="tabs">
-      <button @click="setCurrentMode('Buy')" :style="[currentMode==='Buy'?{borderBottom:'solid 2px #019267'}:{}]">Buy</button>
-      <button @click="setCurrentMode('Sell')" :style="[currentMode==='Sell'?{borderBottom:'solid 2px coral'}:{}]">Sell</button>
+    <div class="trade-box" v-if="!previewMode">
+      <div class="tabs">
+        <button
+          @click="setCurrentMode('Buy')"
+          :style="[
+            currentMode === 'Buy' ? { borderBottom: 'solid 2px #019267' } : {},
+          ]"
+        >
+          Buy
+        </button>
+        <button
+          @click="setCurrentMode('Sell')"
+          :style="[
+            currentMode === 'Sell' ? { borderBottom: 'solid 2px coral' } : {},
+          ]"
+        >
+          Sell
+        </button>
+      </div>
+      <p>{{ assetName + " Balance:" + "455" }}</p>
+      <p>{{ "Number of" + " " + assetName }}</p>
+      <div class="actions">
+        <input type="number" v-model="quantity" autofocus />
+        <button
+          class="main-action-button"
+          @click="this.previewMode = true"
+          :disabled="quantity<=0"
+          :style="[currentMode === 'Sell' ? { background: 'coral' } : {}]"
+        >
+          Preview {{ currentMode }}
+        </button>
+      </div>
     </div>
-    <p>{{"Balance:" + "455"}}</p>
-    <p>{{"Number of" + " " +  assetName+ " you want to " + currentMode  }} </p>
-    <div class="actions">
-        <input type="number" v-model="quantity" autofocus/>
-        <span style="text-decoration:underline;margin-top:15px;display:block;">Buy in terms of USD</span>
-        <button :style="[currentMode==='Sell'?{background:'coral'}:{}]">Preview {{currentMode}}</button>
+
+    <div class="preview" v-if="previewMode">
+      <span class="top-bar">
+        <button class="back-button" @click="this.previewMode=false">Go Back</button>
+        <p>{{currentMode+"ing "}} <b>{{assetName}}</b></p>
+      </span>
+      <p>Total Amount: {{ quantity }}</p>
+      <p>Total Price : {{ quantity * 5 }}</p>
+      <p>Fees : 0</p>
+      <p>New Balance : {{ 50 - quantity * 5 }}</p>
+      <button
+        class="main-action-button"
+        @click="this.previewMode = true"
+        :style="[currentMode === 'Sell' ? { background: 'coral',marginTop:'105px' } : {marginTop:'105px'}]"
+      >
+        {{ currentMode }} Now
+      </button>
     </div>
   </div>
 </template>
@@ -18,30 +58,31 @@
 <script>
 export default {
   name: "TradeModal",
-  data(){
-      return {
-          quantity:0,
-          currentMode:this.tradeMode,
-      }
+  data() {
+    return {
+      quantity: 0,
+      currentMode: this.tradeMode,
+      previewMode: false,
+    };
   },
-  methods:{
-      setQuantity(value){
-          if(value==="+1"){
-              return this.quantity=this.quantity+1
-          }
-          if(value==="-1"){
-              return this.quantity=this.quantity-1
-          }
-          this.quantity=value 
-      },
-      setCurrentMode(value){
-        this.currentMode=value
+  methods: {
+    setQuantity(value) {
+      if (value === "+1") {
+        return (this.quantity = this.quantity + 1);
       }
+      if (value === "-1") {
+        return (this.quantity = this.quantity - 1);
+      }
+      this.quantity = value;
+    },
+    setCurrentMode(value) {
+      this.currentMode = value;
+    },
   },
   props: {
     tradeMode: String,
-    assetName:String,
-    toggleTradeModal:Function
+    assetName: String,
+    toggleTradeModal: Function,
   },
 };
 </script>
@@ -53,66 +94,82 @@ export default {
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
   z-index: 0;
-  top:0;
+  top: 0;
   left: 0;
 }
 .buy-sell-modal {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   background: white;
   z-index: 2;
   height: 300px;
   width: 300px;
-  border-radius:5px;
-  font-size:15px;
-  padding:10px;
+  border-radius: 5px;
+  font-size: 15px;
+  padding: 10px;
 }
 
-input{
-    text-align:center;
-    border:solid 1px rgba(0, 0, 0, 0.2);
-    height:25px;
-    outline:none;
-    border-radius:5px;
-    font-size:50px;
-    height:auto;
-    width:98%;
+input {
+  text-align: center;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  height: 25px;
+  outline: none;
+  border-radius: 5px;
+  font-size: 50px;
+  height: auto;
+  width: 98%;
 }
 
-.tabs{
-  width:100%;
-  margin-bottom:25px;
+.tabs {
+  width: 100%;
+  margin-bottom: 25px;
 }
 
-.tabs button{
-  width:50%;
-  background:inherit;
-  border:none;
-  border-bottom:solid 1px rgba(0, 0, 0, 0.2);
-  height:30px;
-  padding:5px 10px;
+.tabs button {
+  width: 50%;
+  background: inherit;
+  border: none;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+  height: 30px;
+  padding: 5px 10px;
 }
 
-.actions button{
-  display:block;
-  margin:auto;
-  margin-top:50px;
+.main-action-button {
+  display: block;
+  margin: auto;
+  margin-top: 80px;
   background: #019267;
   color: white;
-  border-radius:5px;
-  padding:10px 15px;
+  border-radius: 5px;
+  padding: 10px 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.preview .top-bar{
+  border-bottom:solid 1px rgba(0, 0, 0, 0.2);
   width:100%;
+  height:20px;
+  display:block;
+  padding:3px 0 6px 0;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  border:none;
 }
 
-.actions span:hover{
-  cursor: pointer;
-  color:#019267;
+.preview .back-button{
+  position:absolute;
+  left:5px;
+  top:15px;
+  border:none;
+  background:none;
+  text-decoration:underline;
 }
 </style>

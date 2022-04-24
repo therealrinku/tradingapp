@@ -18,7 +18,7 @@
         <td>{{asset.quanity}}</td>
         <td>${{asset.quanity*asset.price}}</td>
         <div class="actions">
-          <button @click="toggleTradeModal('Sell',asset.name)">Sell</button>
+          <button @click="toggleTradeModal('Sell',asset.symbol)">Sell</button>
         </div>
       </tr>
     </tbody>
