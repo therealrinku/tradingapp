@@ -99,5 +99,17 @@ td {
 .actions button {
   background: coral;
   color: white;
+  border-radius:5px;
+  padding:10px 15px;
+  width:35%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
+
+.actions button:hover{
+  background:red;
+}
+
 </style>

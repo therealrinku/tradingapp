@@ -107,4 +107,8 @@ td {
   align-items:center;
   justify-content:center;
 }
+
+.actions button:hover{
+  background:green;
+}
 </style>
