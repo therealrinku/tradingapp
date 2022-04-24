@@ -1,14 +1,22 @@
 <template>
-  <TopBar :username="username" :currentBalance="currentBalance"/>
-  <NavBar :currentPage="currentPage" :changeCurrentPage="changeCurrentPage"/>
-  <div v-if="currentPage==='trade'">
-    <TradePage :toggleTradeModal="toggleTradeModal" :assets="assets"/>
+  <TopBar :username="username" :currentBalance="currentBalance" :assets="myAssets"/>
+  <NavBar :currentPage="currentPage" :changeCurrentPage="changeCurrentPage" />
+  <div v-if="currentPage === 'trade'">
+    <TradePage :toggleTradeModal="toggleTradeModal" :assets="assets" />
   </div>
-  <div v-if="currentPage==='assets'">
-    <AssetsPage :toggleTradeModal="toggleTradeModal" :myAssets="myAssets"/>
+  <div v-if="currentPage === 'assets'">
+    <AssetsPage :toggleTradeModal="toggleTradeModal" :myAssets="myAssets" />
   </div>
   <div v-if="showTradeModal">
-    <TradeModal :assetName="assetName" :tradeMode="tradeMode" :toggleTradeModal="toggleTradeModal"/>
+    <TradeModal
+      :assetName="assetName"
+      :tradeMode="tradeMode"
+      :toggleTradeModal="toggleTradeModal"
+      :totalBalance="currentBalance"
+      :pricePerCoin="assets.filter(a=>a.symbol===assetName)[0].price"
+      :noOfCoins="myAssets.filter(a=>a.symbol===assetName)[0]?.quanity || 0"
+      :performTrade="performTrade"
+    />
   </div>
   <link
     href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css"
@@ -25,14 +33,14 @@ import TradeModal from "./components/TradeModal.vue";
 
 export default {
   name: "App",
-  data(){
+  data() {
     return {
-      currentPage:"trade",
-      username:"Jane Doe",
-      currentBalance:50,
-      showTradeModal:false,
-      tradeMode:null,
-      assetName:null,
+      currentPage: "trade",
+      username: "Jane Doe",
+      currentBalance: 50,
+      showTradeModal: false,
+      tradeMode: null,
+      assetName: null,
       assets: [
         { name: "Cardano", price: "0.95", symbol: "ADA" },
         { name: "Bitcoin", price: "42,454", symbol: "BTC" },
@@ -45,22 +53,30 @@ export default {
         { name: "Scam INU", price: "0.000000000034939", symbol: "SCAM" },
       ],
       myAssets: [
-        { name: "Cardano", price: 0.95, symbol: "ADA",quanity:43 },
-        { name: "Bitcoin", price: 42454 , symbol: "BTC",quanity:35.55 },
-        { name: "Shiba INU", price: 0.000029, symbol: "SHIB",quanity:24.34 },
-        { name: "Avalanche", price: 98.4, symbol: "AVAX",quanity:204.45 },
-        { name: "Solana", price: 99.34, symbol: "SOL",quanity:390.44 },
-      ]
-    }
+        { name: "Cardano", price: 0.95, symbol: "ADA", quanity: 43 },
+        { name: "Bitcoin", price: 42454, symbol: "BTC", quanity: 35.55 },
+        { name: "Shiba INU", price: 0.000029, symbol: "SHIB", quanity: 24.34 },
+        { name: "Avalanche", price: 98.4, symbol: "AVAX", quanity: 204.45 },
+        { name: "Solana", price: 99.34, symbol: "SOL", quanity: 390.44 },
+      ],
+    };
   },
-  methods:{
-    changeCurrentPage(pageName){
-      this.currentPage=pageName
+  methods: {
+    changeCurrentPage(pageName) {
+      this.currentPage = pageName;
     },
-    toggleTradeModal(tradeMode,assetName){
-      this.showTradeModal=!this.showTradeModal
-      this.tradeMode=tradeMode
-      this.assetName=assetName
+    toggleTradeModal(tradeMode, assetName) {
+      this.showTradeModal = !this.showTradeModal;
+      this.tradeMode = tradeMode;
+      this.assetName = assetName;
+    },
+    performTrade(data){
+        const updatedMyAssets=[...this.myAssets];
+        const updatedAssetIndex=updatedMyAssets.findIndex(d=>d.symbol===data.assetSymbol);
+        updatedMyAssets[updatedAssetIndex].quanity=data.updatedAssetQuantity;
+        this.currentBalance=data.updatedBalance;
+        this.myAssets=updatedMyAssets;
+        this.showTradeModal=false;
     }
   },
   components: {
@@ -68,7 +84,7 @@ export default {
     TradePage,
     TopBar,
     AssetsPage,
-    TradeModal
+    TradeModal,
   },
 };
 </script>
@@ -87,7 +103,7 @@ body {
   margin: 0;
 }
 
-button:hover{
+button:hover {
   cursor: pointer;
 }
 
@@ -98,15 +114,15 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-button:disabled:hover{
-  cursor:not-allowed;
+button:disabled:hover {
+  cursor: not-allowed;
 }
 
-button:disabled{
+button:disabled {
   opacity: 0.6;
 }
 </style>

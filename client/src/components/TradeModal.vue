@@ -20,14 +20,14 @@
           Sell
         </button>
       </div>
-      <p>{{ assetName + " Balance:" + "455" }}</p>
+      <p>{{ assetName + " Balance:" + noOfCoins }}</p>
       <p>{{ "Number of" + " " + assetName }}</p>
       <div class="actions">
         <input type="number" v-model="quantity" autofocus />
         <button
           class="main-action-button"
           @click="this.previewMode = true"
-          :disabled="quantity<=0"
+          :disabled="quantity<=0 || quantity>noOfCoins"
           :style="[currentMode === 'Sell' ? { background: 'coral' } : {}]"
         >
           Preview {{ currentMode }}
@@ -40,14 +40,16 @@
         <button class="back-button" @click="this.previewMode=false">Go Back</button>
         <p>{{currentMode+"ing "}} <b>{{assetName}}</b></p>
       </span>
-      <p>Total Amount: {{ quantity }}</p>
-      <p>Total Price : {{ quantity * 5 }}</p>
+      <p>Number of {{assetName}}: {{ quantity }}</p>
+      <p>Price per Coin: {{pricePerCoin}}</p>
+      <p>Total Price : {{ quantity * pricePerCoin }}</p>
       <p>Fees : 0</p>
-      <p>New Balance : {{ 50 - quantity * 5 }}</p>
+      <p>New Balance : ${{ currentMode==="Buy" ? (50 - (quantity * pricePerCoin)) : (50 + (quantity * pricePerCoin)) }}</p>
+      <p>New {{assetName}} Balance : {{ currentMode==="Buy" ? (noOfCoins + quantity) : (noOfCoins- quantity) }}</p>
       <button
         class="main-action-button"
-        @click="this.previewMode = true"
-        :style="[currentMode === 'Sell' ? { background: 'coral',marginTop:'105px' } : {marginTop:'105px'}]"
+        @click="performTrade({assetSymbol:assetName,updatedBalance:currentMode==='Buy' ? (50 - (quantity * pricePerCoin)) : (50 + (quantity * pricePerCoin)),updatedAssetQuantity:currentMode==='Buy' ? (noOfCoins + quantity) : (noOfCoins- quantity)})"
+        :style="[currentMode === 'Sell' ? { background: 'coral',marginTop:'40px' } : {marginTop:'40px'}]"
       >
         {{ currentMode }} Now
       </button>
@@ -83,6 +85,10 @@ export default {
     tradeMode: String,
     assetName: String,
     toggleTradeModal: Function,
+    totalBalance: Number,
+    pricePerCoin: Number,
+    noOfCoins: Number,
+    performTrade: Function,
   },
 };
 </script>

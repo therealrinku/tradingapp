@@ -1,7 +1,8 @@
 <template>
   <nav class="topbar">
     <div>
-      <p>Balance:{{ !assetValueHidden ? "$" + this.currentBalance : "**" }}</p>
+      <p style="margin-right:30px;">Balance:{{ !assetValueHidden ? "$" + this.currentBalance : "**" }}</p>
+      <p>Assets Value:{{ !assetValueHidden ? "$" + assetsValue : "**" }}</p>
       <button @click="toggleAssetValueView()">
         {{ assetValueHidden ? "Show" : "Hide" }}
       </button>
@@ -16,11 +17,13 @@ export default {
   name: "TopBar",
   props: {
     username:String,
-    currentBalance:String,
+    currentBalance:Number,
+    assets:Array,
   },
   data() {
     return {
       assetValueHidden: false,
+      assetsValue:100
     };
   },
   methods: {
